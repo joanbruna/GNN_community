@@ -11,10 +11,6 @@ function GMul2:updateOutput(input)
 	-- W is a tensor of size (bs, N, N, J)
 	local xsize= x:size()
 	local wsize= W:size()
-	--print(xsize)
-	--print(wsize)
-	--print(x:type())
-	--print(W:type())
 	local output = cast(torch.Tensor(xsize[1], wsize[4]*xsize[2], wsize[3], 1)):zero()
 	for i=1,xsize[1] do 
 	for j=1,wsize[4] do 
@@ -23,7 +19,6 @@ function GMul2:updateOutput(input)
  		output:narrow(1,i,1):narrow(2,1+(j-1)*xsize[2],xsize[2]):copy(xW:view(1, xsize[2], wsize[3], 1))
 	end
 	end
-	--print(output:size())
       return output
 end
 
@@ -36,7 +31,6 @@ function GMul2:updateGradInput(input, gradOutput)
 	local xsize = xd:size()
 	local wsize =W:size()
 	local gradInput = {}
-	--print(gradOutput:size())
 	local gtot = cast(torch.Tensor(xsize[1], xsize[2], xsize[3])):zero()
 	for i=1,xsize[1] do 
 		local gtmp = cast(torch.Tensor(xsize[2], xsize[3])):zero()
